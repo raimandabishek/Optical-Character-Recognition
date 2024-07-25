@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Text Extraction</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0F2027, #203A43, #2C5364);
+            background-image: url('static/bg.png'); /* Ensure the path is correct */
+            background-size: cover; /* Ensure the background image covers the entire area */
+            background-position: center; /* Center the background image */
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 1200px;
+            height: auto;
+            background-color: rgba(213, 212, 203, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(48, 47, 47, 0.1);
+            overflow: hidden;
+            padding: 50px;
+        }
+        .heading {
+            margin: 20px 0;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            color: #1f1d1d;
+        }
+        .welcome-content {
+            text-align: center;
+            margin: 20px;
+            color: #1c1b1b;
+        }
+        .content {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: auto;
+        }
+        .box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .box.upload {
+            border-right: 1px solid #beb4b4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .box.upload form {
+            width: 100%;
+            max-width: 400px;
+        }
+        .box.upload form .form-group {
+            margin-bottom: 15px;
+        }
+        .box.upload button {
+            width: 100%;
+        }
+        .box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .box pre {
+            background-color: #a3a29e;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .box.upload button {
+            width: 100%;
+            background-color: #626d6a; /* Set your desired color here */
+            color: white; /* Set text color */
+        }
+        #image-preview, #pdf-preview {
+            display: none;
+            width: 100%;
+            max-height: 300px;
+            margin-top: 20px;
+        }
+        #pdf-preview {
+            height: 500px;
+        }
+        #loading-indicator {
+            display: none;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">Optical Character Recognition</h1>
+        <div class="welcome-content">
+            <p>Optical Character Recognition (OCR) is a technology that enables the conversion of different types of documents, such as scanned paper documents, PDF files, or images captured by a digital camera, into editable and searchable data.</p>
+        </div>
+        <div class="content">
+            <div class="box upload">
+                <h2>Upload Image or PDF</h2>
+                <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
+                    <div class="form-group">
+                        <input type="file" name="file" class="form-control-file" accept="image/*,.pdf" required onchange="showPreview(event)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <img id="image-preview" src="" alt="Image Preview">
+                <embed id="pdf-preview" src="" type="application/pdf">
+                <div id="loading-indicator" class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div class="box">
+                <h2>Extracted Text</h2>
+                <pre id="extracted-text">{{ extracted_text }}</pre>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showPreview(event) {
+            const file = event.target.files[0];
+            const imagePreview = document.getElementById('image-preview');
+            const pdfPreview = document.getElementById('pdf-preview');
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    if (file.type.includes('image')) {
+                        imagePreview.style.display = 'block';
+                        pdfPreview.style.display = 'none';
+                        imagePreview.src = e.target.result;
+                    } else if (file.type === 'application/pdf') {
+                        pdfPreview.style.display = 'block';
+                        imagePreview.style.display = 'none';
+                        pdfPreview.src = e.target.result;
+                    }
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        $(document).ready(function() {
+            $('#upload-form').on('submit', function(e) {
+                $('#loading-indicator').show();
+            });
+        });
+    </script>
+</body>
+</html>
+
