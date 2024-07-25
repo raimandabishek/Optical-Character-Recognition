@@ -1,0 +1,99 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #0F2027, #203A43, #2C5364);
+    background-image: url('static/bg.png'); /* Ensure the path is correct */
+    background-size: cover; /* Ensure the background image covers the entire area */
+    background-position: center; /* Center the background image */
+    margin: 0;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 1200px;
+    height: auto;
+    background-color: rgba(213, 212, 203, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(48, 47, 47, 0.1);
+    overflow: hidden;
+    padding: 50px;
+}
+.heading {
+    margin: 20px 0;
+    text-align: center;
+    animation: fadeIn 2s ease-in-out;
+    color: #1f1d1d;
+}
+.welcome-content {
+    text-align: center;
+    margin: 20px;
+    color: #1c1b1b;
+}
+.content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+}
+.box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+.box.upload {
+    border-right: 1px solid #beb4b4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.box.upload form {
+    width: 100%;
+    max-width: 400px;
+}
+.box.upload form .form-group {
+    margin-bottom: 15px;
+}
+.box.upload button {
+    width: 100%;
+}
+.box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.box pre {
+    background-color: #a3a29e;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+}
+.box.upload button {
+    width: 100%;
+    background-color: #626d6a; /* Set your desired color here */
+    color: white; /* Set text color */
+}
+#image-preview, #pdf-preview {
+    display: none;
+    width: 100%;
+    max-height: 300px;
+    margin-top: 20px;
+}
+#pdf-preview {
+    height: 500px;
+}
+#loading-indicator {
+    display: none;
+    margin-top: 20px;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
