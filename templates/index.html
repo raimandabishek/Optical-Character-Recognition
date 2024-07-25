@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             background: linear-gradient(135deg, #0F2027, #203A43, #2C5364);
-            background-image: url('static/bg.png'); /* Ensure the path is correct */
+            background-image: url('/static/bg.png'); /* Ensure the path is correct */
             background-size: cover; /* Ensure the background image covers the entire area */
             background-position: center; /* Center the background image */
             margin: 0;
@@ -84,14 +84,11 @@
             background-color: #626d6a; /* Set your desired color here */
             color: white; /* Set text color */
         }
-        #image-preview, #pdf-preview {
+        #image-preview {
             display: none;
             width: 100%;
             max-height: 300px;
             margin-top: 20px;
-        }
-        #pdf-preview {
-            height: 500px;
         }
         #loading-indicator {
             display: none;
@@ -123,7 +120,6 @@
                     <button type="submit" class="btn btn-primary">Upload</button>
                 </form>
                 <img id="image-preview" src="" alt="Image Preview">
-                <embed id="pdf-preview" src="" type="application/pdf">
                 <div id="loading-indicator" class="spinner-border text-primary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -131,6 +127,9 @@
             <div class="box">
                 <h2>Extracted Text</h2>
                 <pre id="extracted-text">{{ extracted_text }}</pre>
+                {% if extracted_text %}
+                <a href="{{ url_for('download') }}" class="btn btn-success mt-3">Download as JSON</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -141,7 +140,6 @@
         function showPreview(event) {
             const file = event.target.files[0];
             const imagePreview = document.getElementById('image-preview');
-            const pdfPreview = document.getElementById('pdf-preview');
 
             if (file) {
                 const reader = new FileReader();
@@ -149,25 +147,13 @@
                 reader.onload = function(e) {
                     if (file.type.includes('image')) {
                         imagePreview.style.display = 'block';
-                        pdfPreview.style.display = 'none';
                         imagePreview.src = e.target.result;
-                    } else if (file.type === 'application/pdf') {
-                        pdfPreview.style.display = 'block';
-                        imagePreview.style.display = 'none';
-                        pdfPreview.src = e.target.result;
                     }
                 }
 
                 reader.readAsDataURL(file);
             }
         }
-
-        $(document).ready(function() {
-            $('#upload-form').on('submit', function(e) {
-                $('#loading-indicator').show();
-            });
-        });
     </script>
 </body>
 </html>
-
